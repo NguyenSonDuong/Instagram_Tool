@@ -5,8 +5,8 @@ c:\users\nguyen son duong\documents\visual studio 2015\Projects\InsstagramTool\I
 c:\users\nguyen son duong\documents\visual studio 2015\Projects\InsstagramTool\InsstagramTool\bin\Debug\xNet.dll
 c:\users\nguyen son duong\documents\visual studio 2015\Projects\InsstagramTool\InsstagramTool\bin\Debug\Newtonsoft.Json.xml
 c:\users\nguyen son duong\documents\visual studio 2015\Projects\InsstagramTool\InsstagramTool\obj\Debug\InsstagramTool.csprojResolveAssemblyReference.cache
-c:\users\nguyen son duong\documents\visual studio 2015\Projects\InsstagramTool\InsstagramTool\obj\Debug\InsstagramTool.Form1.resources
 c:\users\nguyen son duong\documents\visual studio 2015\Projects\InsstagramTool\InsstagramTool\obj\Debug\InsstagramTool.Properties.Resources.resources
 c:\users\nguyen son duong\documents\visual studio 2015\Projects\InsstagramTool\InsstagramTool\obj\Debug\InsstagramTool.csproj.GenerateResource.Cache
 c:\users\nguyen son duong\documents\visual studio 2015\Projects\InsstagramTool\InsstagramTool\obj\Debug\InsstagramTool.exe
 c:\users\nguyen son duong\documents\visual studio 2015\Projects\InsstagramTool\InsstagramTool\obj\Debug\InsstagramTool.pdb
+c:\users\nguyen son duong\documents\visual studio 2015\Projects\InsstagramTool\InsstagramTool\obj\Debug\InsstagramTool.MainForm.resources
