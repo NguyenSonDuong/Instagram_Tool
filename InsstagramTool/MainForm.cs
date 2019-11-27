@@ -59,26 +59,27 @@ namespace InsstagramTool
                             string myID = getMyIDFromCookie(cookie).Trim();
                             if (!string.IsNullOrEmpty(myID))
                             {
-                                string dataPost = String.Format("{\"user_id\":\"%s\",\"include_chaining\":true,\"include_reel\":true,\"include_suggested_users\":true,\"include_logged_out_extras\":false,\"include_highlight_reels\":false,\"include_related_profiles\":false}", myID);
-                                File.WriteAllText("tesst.txt", dataPost);
-                                Process.Start("tesst.txt");
-                                string getUserName = http.Get(uri + query_hash["userInfor"] + "&variables=" + dataPost).ToString();
+                                string dataPost = "{\"user_id\":\""+myID+"\",\"include_chaining\":true,\"include_reel\":true,\"include_suggested_users\":true,\"include_logged_out_extras\":false,\"include_highlight_reels\":false,\"include_related_profiles\":false}";
+                                string getUserName = http.Get(uri+ "query_hash=" + query_hash["userInfor"] + "&variables=" + dataPost).ToString();
+                                string userNameFormID = getUserNameFromID(getUserName).Trim();
+                                string linkGetInfor = "https://www.instagram.com/"+userNameFormID+"/?__a=1";
                                 InforUser.Rootobject root = null;
                                 try
                                 {
-                                    root = JsonConvert.DeserializeObject<InforUser.Rootobject>(getUserName);
+                                    root = JsonConvert.DeserializeObject<InforUser.Rootobject>(http.Get(linkGetInfor).ToString());
                                 }
                                 catch (Exception ex)
                                 {
                                     MessageBox.Show("Errorr: Error cover json");
                                 }
+
                                 if (root != null)
                                 {
                                     picAvatar.ImageLocation = root.graphql.user.profile_pic_url_hd;
-                                    lbFollow.Text = root.graphql.user.edge_follow.count + "";
-                                    lbFollower.Text = root.graphql.user.edge_followed_by.count + "";
-                                    lbID.Text = myID;
-                                    lbName.Text = root.graphql.user.full_name;
+                                    lbFollow.Text = "Follow: "+ root.graphql.user.edge_follow.count + "";
+                                    lbFollower.Text = "Follower: " + root.graphql.user.edge_followed_by.count + "";
+                                    lbID.Text = "ID: "+ myID;
+                                    lbName.Text ="Tên: "+ root.graphql.user.full_name;
                                 }
                             }
                         }

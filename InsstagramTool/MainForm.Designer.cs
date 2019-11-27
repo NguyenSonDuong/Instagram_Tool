@@ -47,9 +47,6 @@
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.button3 = new System.Windows.Forms.Button();
-            this.panel7 = new System.Windows.Forms.Panel();
-            this.textBox5 = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
             this.button4 = new System.Windows.Forms.Button();
             this.panel8 = new System.Windows.Forms.Panel();
             this.lbFollower = new System.Windows.Forms.Label();
@@ -64,7 +61,6 @@
             this.panel4.SuspendLayout();
             this.panel5.SuspendLayout();
             this.panel6.SuspendLayout();
-            this.panel7.SuspendLayout();
             this.panel8.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picAvatar)).BeginInit();
             this.SuspendLayout();
@@ -268,48 +264,23 @@
             this.button3.Text = "Tải";
             this.button3.UseVisualStyleBackColor = false;
             // 
-            // panel7
-            // 
-            this.panel7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
-            this.panel7.Controls.Add(this.textBox5);
-            this.panel7.Location = new System.Drawing.Point(172, 255);
-            this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(241, 36);
-            this.panel7.TabIndex = 14;
-            // 
-            // textBox5
-            // 
-            this.textBox5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
-            this.textBox5.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBox5.ForeColor = System.Drawing.Color.White;
-            this.textBox5.Location = new System.Drawing.Point(14, 9);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(214, 17);
-            this.textBox5.TabIndex = 1;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(28, 265);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(138, 17);
-            this.label5.TabIndex = 13;
-            this.label5.Text = "Lấy danh sách người follow";
-            // 
             // button4
             // 
             this.button4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(44)))), ((int)(((byte)(44)))));
             this.button4.FlatAppearance.BorderSize = 0;
             this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button4.Location = new System.Drawing.Point(419, 255);
+            this.button4.Location = new System.Drawing.Point(172, 251);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(75, 36);
             this.button4.TabIndex = 12;
-            this.button4.Text = "Get data";
+            this.button4.Text = "Get Follow";
             this.button4.UseVisualStyleBackColor = false;
             // 
             // panel8
             // 
+            this.panel8.AutoSize = true;
+            this.panel8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(10)))), ((int)(((byte)(10)))));
+            this.panel8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel8.Controls.Add(this.lbFollower);
             this.panel8.Controls.Add(this.lbFollow);
             this.panel8.Controls.Add(this.lbID);
@@ -322,39 +293,39 @@
             // 
             // lbFollower
             // 
-            this.lbFollower.AutoSize = true;
-            this.lbFollower.Location = new System.Drawing.Point(99, 301);
+            this.lbFollower.Location = new System.Drawing.Point(61, 301);
             this.lbFollower.Name = "lbFollower";
-            this.lbFollower.Size = new System.Drawing.Size(110, 17);
+            this.lbFollower.Size = new System.Drawing.Size(195, 17);
             this.lbFollower.TabIndex = 10;
             this.lbFollower.Text = "Tải ảnh của một user:";
+            this.lbFollower.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lbFollow
             // 
-            this.lbFollow.AutoSize = true;
-            this.lbFollow.Location = new System.Drawing.Point(99, 275);
+            this.lbFollow.Location = new System.Drawing.Point(61, 275);
             this.lbFollow.Name = "lbFollow";
-            this.lbFollow.Size = new System.Drawing.Size(110, 17);
+            this.lbFollow.Size = new System.Drawing.Size(195, 17);
             this.lbFollow.TabIndex = 9;
             this.lbFollow.Text = "Tải ảnh của một user:";
+            this.lbFollow.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lbID
             // 
-            this.lbID.AutoSize = true;
-            this.lbID.Location = new System.Drawing.Point(99, 249);
+            this.lbID.Location = new System.Drawing.Point(61, 249);
             this.lbID.Name = "lbID";
-            this.lbID.Size = new System.Drawing.Size(110, 17);
+            this.lbID.Size = new System.Drawing.Size(195, 17);
             this.lbID.TabIndex = 8;
             this.lbID.Text = "Tải ảnh của một user:";
+            this.lbID.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lbName
             // 
-            this.lbName.AutoSize = true;
-            this.lbName.Location = new System.Drawing.Point(99, 223);
+            this.lbName.Location = new System.Drawing.Point(61, 223);
             this.lbName.Name = "lbName";
-            this.lbName.Size = new System.Drawing.Size(110, 17);
+            this.lbName.Size = new System.Drawing.Size(195, 17);
             this.lbName.TabIndex = 7;
             this.lbName.Text = "Tải ảnh của một user:";
+            this.lbName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // picAvatar
             // 
@@ -372,8 +343,6 @@
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(873, 435);
             this.Controls.Add(this.panel8);
-            this.Controls.Add(this.panel7);
-            this.Controls.Add(this.label5);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.panel6);
             this.Controls.Add(this.label4);
@@ -402,10 +371,7 @@
             this.panel5.PerformLayout();
             this.panel6.ResumeLayout(false);
             this.panel6.PerformLayout();
-            this.panel7.ResumeLayout(false);
-            this.panel7.PerformLayout();
             this.panel8.ResumeLayout(false);
-            this.panel8.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picAvatar)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -433,9 +399,6 @@
         private System.Windows.Forms.TextBox textBox3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Panel panel7;
-        private System.Windows.Forms.TextBox textBox5;
-        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Panel panel8;
         private System.Windows.Forms.Label lbFollower;
