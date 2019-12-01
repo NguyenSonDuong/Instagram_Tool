@@ -54,6 +54,9 @@
             this.lbID = new System.Windows.Forms.Label();
             this.lbName = new System.Windows.Forms.Label();
             this.picAvatar = new System.Windows.Forms.PictureBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
+            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -87,6 +90,7 @@
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox2.TabIndex = 2;
             this.pictureBox2.TabStop = false;
+            this.pictureBox2.Click += new System.EventHandler(this.pictureBox2_Click);
             // 
             // pictureBox1
             // 
@@ -263,6 +267,7 @@
             this.button3.TabIndex = 9;
             this.button3.Text = "Tải";
             this.button3.UseVisualStyleBackColor = false;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // button4
             // 
@@ -275,6 +280,7 @@
             this.button4.TabIndex = 12;
             this.button4.Text = "Get Follow";
             this.button4.UseVisualStyleBackColor = false;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // panel8
             // 
@@ -286,7 +292,7 @@
             this.panel8.Controls.Add(this.lbID);
             this.panel8.Controls.Add(this.lbName);
             this.panel8.Controls.Add(this.picAvatar);
-            this.panel8.Location = new System.Drawing.Point(532, 81);
+            this.panel8.Location = new System.Drawing.Point(532, 114);
             this.panel8.Name = "panel8";
             this.panel8.Size = new System.Drawing.Size(306, 337);
             this.panel8.TabIndex = 15;
@@ -336,12 +342,31 @@
             this.picAvatar.TabIndex = 0;
             this.picAvatar.TabStop = false;
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.ForeColor = System.Drawing.Color.Maroon;
+            this.label5.Location = new System.Drawing.Point(266, 270);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(0, 17);
+            this.label5.TabIndex = 16;
+            // 
+            // richTextBox1
+            // 
+            this.richTextBox1.Location = new System.Drawing.Point(158, 311);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.Size = new System.Drawing.Size(335, 156);
+            this.richTextBox1.TabIndex = 17;
+            this.richTextBox1.Text = "";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
-            this.ClientSize = new System.Drawing.Size(873, 435);
+            this.ClientSize = new System.Drawing.Size(873, 505);
+            this.Controls.Add(this.richTextBox1);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.panel8);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.panel6);
@@ -406,6 +431,9 @@
         private System.Windows.Forms.Label lbID;
         private System.Windows.Forms.Label lbName;
         private System.Windows.Forms.PictureBox picAvatar;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
+        public System.Windows.Forms.RichTextBox richTextBox1;
     }
 }
 
