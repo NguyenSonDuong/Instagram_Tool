@@ -28,6 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.panel1 = new System.Windows.Forms.Panel();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
@@ -39,7 +41,6 @@
             this.button1 = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.tbCookie = new System.Windows.Forms.TextBox();
-            this.button2 = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.panel5 = new System.Windows.Forms.Panel();
             this.textBox4 = new System.Windows.Forms.TextBox();
@@ -56,7 +57,13 @@
             this.picAvatar = new System.Windows.Forms.PictureBox();
             this.label5 = new System.Windows.Forms.Label();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.button2 = new System.Windows.Forms.Button();
+            this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.mởPhầnMềmToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.lấyFollowCủaBảnThânToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.thêmCookieToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.đóngPhầnMềmToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -66,6 +73,7 @@
             this.panel6.SuspendLayout();
             this.panel8.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picAvatar)).BeginInit();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -101,6 +109,7 @@
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 1;
             this.pictureBox1.TabStop = false;
+            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
             // panel2
             // 
@@ -186,18 +195,6 @@
             this.tbCookie.Size = new System.Drawing.Size(282, 17);
             this.tbCookie.TabIndex = 1;
             // 
-            // button2
-            // 
-            this.button2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(44)))), ((int)(((byte)(44)))));
-            this.button2.FlatAppearance.BorderSize = 0;
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Location = new System.Drawing.Point(419, 151);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 36);
-            this.button2.TabIndex = 5;
-            this.button2.Text = "Tải";
-            this.button2.UseVisualStyleBackColor = false;
-            // 
             // label3
             // 
             this.label3.AutoSize = true;
@@ -274,7 +271,7 @@
             this.button4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(44)))), ((int)(((byte)(44)))));
             this.button4.FlatAppearance.BorderSize = 0;
             this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button4.Location = new System.Drawing.Point(172, 251);
+            this.button4.Location = new System.Drawing.Point(418, 251);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(75, 36);
             this.button4.TabIndex = 12;
@@ -351,13 +348,68 @@
             this.label5.Size = new System.Drawing.Size(0, 17);
             this.label5.TabIndex = 16;
             // 
-            // richTextBox1
+            // button2
             // 
-            this.richTextBox1.Location = new System.Drawing.Point(158, 311);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(335, 156);
-            this.richTextBox1.TabIndex = 17;
-            this.richTextBox1.Text = "";
+            this.button2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(44)))), ((int)(((byte)(44)))));
+            this.button2.FlatAppearance.BorderSize = 0;
+            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button2.Location = new System.Drawing.Point(419, 151);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 36);
+            this.button2.TabIndex = 5;
+            this.button2.Text = "Tải";
+            this.button2.UseVisualStyleBackColor = false;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // notifyIcon1
+            // 
+            this.notifyIcon1.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+            this.notifyIcon1.BalloonTipText = "Nhấn để mở";
+            this.notifyIcon1.BalloonTipTitle = "Nhấn để mở";
+            this.notifyIcon1.ContextMenuStrip = this.contextMenuStrip1;
+            this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
+            this.notifyIcon1.Text = "notifyIcon1";
+            this.notifyIcon1.Visible = true;
+            this.notifyIcon1.DoubleClick += new System.EventHandler(this.notifyIcon1_DoubleClick);
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mởPhầnMềmToolStripMenuItem,
+            this.lấyFollowCủaBảnThânToolStripMenuItem,
+            this.thêmCookieToolStripMenuItem,
+            this.đóngPhầnMềmToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(203, 92);
+            // 
+            // mởPhầnMềmToolStripMenuItem
+            // 
+            this.mởPhầnMềmToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.mởPhầnMềmToolStripMenuItem.Image = global::InsstagramTool.Properties.Resources._1491580635_yumminkysocialmedia26_83102;
+            this.mởPhầnMềmToolStripMenuItem.Name = "mởPhầnMềmToolStripMenuItem";
+            this.mởPhầnMềmToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
+            this.mởPhầnMềmToolStripMenuItem.Text = "Mở phần mềm";
+            this.mởPhầnMềmToolStripMenuItem.Click += new System.EventHandler(this.mởPhầnMềmToolStripMenuItem_Click);
+            // 
+            // lấyFollowCủaBảnThânToolStripMenuItem
+            // 
+            this.lấyFollowCủaBảnThânToolStripMenuItem.Name = "lấyFollowCủaBảnThânToolStripMenuItem";
+            this.lấyFollowCủaBảnThânToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
+            this.lấyFollowCủaBảnThânToolStripMenuItem.Text = "Lấy Follow của bản thân";
+            // 
+            // thêmCookieToolStripMenuItem
+            // 
+            this.thêmCookieToolStripMenuItem.Name = "thêmCookieToolStripMenuItem";
+            this.thêmCookieToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
+            this.thêmCookieToolStripMenuItem.Text = "Thêm cookie";
+            // 
+            // đóngPhầnMềmToolStripMenuItem
+            // 
+            this.đóngPhầnMềmToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.đóngPhầnMềmToolStripMenuItem.Name = "đóngPhầnMềmToolStripMenuItem";
+            this.đóngPhầnMềmToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
+            this.đóngPhầnMềmToolStripMenuItem.Text = "Đóng phần mềm";
+            this.đóngPhầnMềmToolStripMenuItem.Click += new System.EventHandler(this.đóngPhầnMềmToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -365,7 +417,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(873, 505);
-            this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.panel8);
             this.Controls.Add(this.button4);
@@ -382,8 +433,11 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "MainForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.SizeChanged += new System.EventHandler(this.MainForm_SizeChanged);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
@@ -398,6 +452,7 @@
             this.panel6.PerformLayout();
             this.panel8.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.picAvatar)).EndInit();
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -416,7 +471,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.TextBox tbCookie;
-        private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Panel panel5;
         private System.Windows.Forms.TextBox textBox4;
@@ -433,7 +487,13 @@
         private System.Windows.Forms.PictureBox picAvatar;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
-        public System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.NotifyIcon notifyIcon1;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem mởPhầnMềmToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem lấyFollowCủaBảnThânToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem thêmCookieToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem đóngPhầnMềmToolStripMenuItem;
     }
 }
 

@@ -61,3 +61,4 @@ C:\Users\Nguyen Son Duong\documents\visual studio 2015\Projects\InsstagramTool\I
 C:\Users\Nguyen Son Duong\documents\visual studio 2015\Projects\InsstagramTool\InsstagramTool\bin\Debug\ru\DevExpress.Sparkline.v19.1.Core.resources.dll
 C:\Users\Nguyen Son Duong\documents\visual studio 2015\Projects\InsstagramTool\InsstagramTool\obj\Debug\InsstagramTool.ListFollow.resources
 C:\Users\Nguyen Son Duong\documents\visual studio 2015\Projects\InsstagramTool\InsstagramTool\obj\Debug\InsstagramTool.exe.licenses
+C:\Users\Nguyen Son Duong\documents\visual studio 2015\Projects\InsstagramTool\InsstagramTool\obj\Debug\InsstagramTool.Save.resources

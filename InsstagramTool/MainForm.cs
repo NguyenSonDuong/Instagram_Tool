@@ -18,101 +18,210 @@ namespace InsstagramTool
 {
     public partial class MainForm : Form
     {
-        #region bắt sự kiện bàn phím nè
-        private const int WH_KEYBOARD_LL = 13;
-        private const int WM_KEYDOWN = 0x0100;
-
-        private static LowLevelKeyboardProc _proc = HookCallback;
-        private static IntPtr _hookID = IntPtr.Zero;
-
-        private static string logName = "Log_";
-        private static string logExtendtion = ".txt";
-
-        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        private static extern IntPtr SetWindowsHookEx(int idHook,
-            LowLevelKeyboardProc lpfn, IntPtr hMod, uint dwThreadId);
-
-        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        private static extern bool UnhookWindowsHookEx(IntPtr hhk);
-
-        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        private static extern IntPtr CallNextHookEx(IntPtr hhk, int nCode,
-            IntPtr wParam, IntPtr lParam);
-
-        [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        private static extern IntPtr GetModuleHandle(string lpModuleName);
-        private delegate IntPtr LowLevelKeyboardProc(
-        int nCode, IntPtr wParam, IntPtr lParam);
-        
-        private static IntPtr SetHook(LowLevelKeyboardProc proc)
+        #region
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        private static extern bool RegisterHotKey(IntPtr hWnd, int id, int fsModifiers, int vk);
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
+        enum KeyModifier
         {
-            using (Process curProcess = Process.GetCurrentProcess())
+            None = 0,
+            Alt = 1,
+            Control = 2,
+            Shift = 4,
+            WinKey = 8
+        }
+
+        protected override void WndProc(ref Message m)
+        {
+            base.WndProc(ref m);
+
+            if (m.Msg == 0x0312)
             {
-                using (ProcessModule curModule = curProcess.MainModule)
+                Keys key = (Keys)(((int)m.LParam >> 16) & 0xFFFF);                  // The key of the hotkey that was pressed.
+                KeyModifier modifier = (KeyModifier)((int)m.LParam & 0xFFFF);       // The modifier of the hotkey that was pressed.
+                int id = m.WParam.ToInt32();
+                // The id of the hotkey that was pressed.
+                if (id == 1999)
                 {
-                    return SetWindowsHookEx(WH_KEYBOARD_LL, proc,
-                    GetModuleHandle(curModule.ModuleName), 0);
+                    runDownloadPost();
+                }
+                else if (id == 2000)
+                {
+                    runDownloadUser();
+                }else if (id == 2012)
+                {
+
+                }
+
+            }
+        }
+
+        public void runDownloadPost()
+        {
+            try
+            {
+                string link = Clipboard.GetText();
+                if (link.StartsWith("https://www.instagram.com/") || link.StartsWith("https://instagram.com/") || link.StartsWith("instagram.com/"))
+                {
+                    if (!File.Exists("path.ini"))
+                        return;
+                    string path = File.ReadAllText("path.ini");
+                    if (string.IsNullOrEmpty(path))
+                        return;
+                    Thread t = new Thread(
+                    () =>
+                    {
+                        string idm = link.Split('/')[4];
+                        if (!Directory.Exists(path + "\\" + idm))
+                            Directory.CreateDirectory(path + "\\" + idm);
+                        DownloadImageOfPost(path + "\\" + idm, idm, cookie, idm);
+                    });
+                    t.IsBackground = false;
+                    t.Start();
                 }
             }
-        }
-        
-        private static IntPtr HookCallback(int nCode, IntPtr wParam, IntPtr lParam)
-        {
-            if (nCode >= 0 && wParam == (IntPtr)WM_KEYDOWN)
+            catch (Exception ex)
             {
-                int vkCode = Marshal.ReadInt32(lParam);
-                WriteLog(vkCode);
-                CheckHotKey(vkCode);
+                MessageBox.Show(ex.Message);
             }
-            return CallNextHookEx(_hookID, nCode, wParam, lParam);
         }
-        
-        static void WriteLog(int vkCode)
+        public int count = 0;
+        public void runDownloadUser()
         {
-            Console.WriteLine((Keys)vkCode);
-            string logNameToWrite = logName + DateTime.Now.ToLongDateString() + logExtendtion;
-            StreamWriter sw = new StreamWriter(logNameToWrite, true);
-            sw.Write((Keys)vkCode);
-            sw.Close();
-        }
-        
-        static void HookKeyboard()
-        {
-            _hookID = SetHook(_proc);
-            UnhookWindowsHookEx(_hookID);
-        }
-        
-        static Keys previours1Key = Keys.Separator;
-        static Keys previours2Key = Keys.Separator;
-        static bool isClick = false;
-        static void CheckHotKey(int vkCode)
-        {
-            if((previours1Key == Keys.RControlKey || previours1Key == Keys.LControlKey) && isClick)
+            try
             {
-                isClick = true;
-                if(previours2Key == Keys.LShiftKey || previours2Key == Keys.RShiftKey)
+                string link = Clipboard.GetText();
+                if (link.StartsWith("https://www.instagram.com/") || link.StartsWith("https://instagram.com/") || link.StartsWith("instagram.com/"))
                 {
-                    isClick = true;
-                    if((Keys)vkCode == Keys.I)
+                    if (!File.Exists("path.ini"))
+                        return;
+
+                    string path = File.ReadAllText("path.ini");
+
+                    if (string.IsNullOrEmpty(path))
+                        return;
+
+                    Thread t = new Thread(
+                    () =>
                     {
-                        MessageBox.Show("Nhấn đk rồi");
+                        String name = "";
+                        string idm = getIDOfUser(ref name, link, cookie);
+                        if (!Directory.Exists(path + "\\" + name))
+                            Directory.CreateDirectory(path + "\\" + name);
+                        DownLoadImage(path + "\\" + name, idm, cookie, "", idm);
+                    });
+                    t.IsBackground = false;
+                    t.Start();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        public void DownLoadImage(string path, string name, string cookie, string after, string id)
+        {
+            string data = "{\"id\":\"" + id + "\",\"first\":24,\"after\":\"" + after + "\"}";
+            string quety_hash = MainForm.query_hash["user_newfeed"].ToString();
+            string link = MainForm.uri + "query_hash=" + quety_hash + "&variables=" + data;
+            try
+            {
+                HttpRequest http = new HttpRequest();
+                http.Cookies = new CookieDictionary();
+                MainForm.AddCookie(http, cookie);
+                string json = http.Get(link).ToString();
+                ImageOfUser.Rootobject root = JsonConvert.DeserializeObject<ImageOfUser.Rootobject>(json);
+                foreach (ImageOfUser.Edge item in root.data.user.edge_owner_to_timeline_media.edges)
+                {
+                    if (item.node.__typename.Equals("GraphSidecar"))
+                    {
+                        foreach(ImageOfUser.Edge5 item2 in item.node.edge_sidecar_to_children.edges)
+                        {
+                            string src = "";
+                            string end = ".jpg";
+                            if (item.node.is_video)
+                            {
+                                src = item2.node.video_url;
+                                end = ".mp4";
+                            }
+                            else
+                                src = item2.node.display_resources[2].src;
+                            http.Get(src).ToFile(path + "/" + name + DateTime.Now.Ticks + end);
+                        }
                     }
                     else
                     {
-                        MessageBox.Show("Nhấn không đk rồi");
-                        isClick = false;
+                        string src = "";
+                        string end = ".jpg";
+                        if (item.node.is_video)
+                        {
+                            src = item.node.video_url;
+                            end = ".mp4";
+                        }
+                        else
+                            src = item.node.display_resources[2].src;
+                        http.Get(src).ToFile(path + "/" + name + DateTime.Now.Ticks + end);
                     }
 
-                }else
-                {
-                    previours2Key = (Keys)vkCode;
-                    isClick = false;
+                    #region comment
+                    //string src = "";
+                    //string end = ".jpg";
+                    //if (item.node.is_video)
+                    //{
+                    //    src = item.node.video_url;
+                    //    end = ".mp4";
+                    //}
+                    //else
+                    //    src = item.node.display_resources[2].src;
+                    //http.Get(src).ToFile(path + "/" + name + DateTime.Now.Ticks + "_" + count + end);
+                    //count++;
+                    #endregion
+
                 }
-                
-            }else
-            previours1Key = (Keys)vkCode;
+                Thread.Sleep(new Random().Next(500, 2000));
+                if (root.data.user.edge_owner_to_timeline_media.page_info.has_next_page)
+                    DownLoadImage(path, name, cookie, root.data.user.edge_owner_to_timeline_media.page_info.end_cursor, id);
+                else
+                {
+                    MessageBox.Show("Đãm tải xong: " + count);
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message);
+                return;
+            }
         }
+        public string getIDOfUser(ref String userName,string link,string cookie)
+        {
+            link = link.Trim();
+            if (link.EndsWith("/"))
+            {
+                link += "?__a=1";
+            }else
+            {
+                link += "/?__a=1";
+            }
+            try
+            {
+                HttpRequest http = new HttpRequest();
+                http.Cookies = new CookieDictionary();
+                if(!string.IsNullOrEmpty(cookie))
+                    AddCookie(http, cookie);
+                string json = http.Get(link).ToString();
+                InforUser.Rootobject root = JsonConvert.DeserializeObject<InforUser.Rootobject>(json);
+                userName = root.graphql.user.username;
+                return root.graphql.user.id;
+            }catch(Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message);
+            }
+            return "-1";
+        }
+
         #endregion
 
         public static Dictionary<string, object> query_hash = new Dictionary<string, object>();
@@ -126,7 +235,7 @@ namespace InsstagramTool
             query_hash.Add("user_newfeed", "2c5d4d8b70cad329c4a6ebe3abb6eedd");
             query_hash.Add("post", "fead941d698dc1160a298ba7bec277ac");
             InitializeComponent();
-            
+
         }
         private void label2_Click(object sender, EventArgs e)
         {
@@ -135,8 +244,14 @@ namespace InsstagramTool
 
         private void Form1_Load(object sender, EventArgs e)
         {
+
             loadUser();
-            HookKeyboard();
+            int id = 1999;     // The id of the hotkey. 
+            int id2 = 2000;
+            int id3 = 2012;
+            RegisterHotKey(this.Handle, id, (int)KeyModifier.Shift, Keys.F7.GetHashCode());
+            RegisterHotKey(this.Handle, id2, (int)KeyModifier.Shift, Keys.F8.GetHashCode());
+            RegisterHotKey(this.Handle, id3, (int)KeyModifier.Shift, Keys.F12.GetHashCode());
             new DiChuyenForm(this, panel1);
         }
         public void loadUser()
@@ -220,6 +335,7 @@ namespace InsstagramTool
             }
             return "";
         }
+
         public static string getMyIDFromCookie(string cookie)
         {
             var temp = cookie.Split(';');
@@ -286,12 +402,10 @@ namespace InsstagramTool
                             if (link.StartsWith("https://www.instagram.com/") || link.StartsWith("https://instagram.com/"))
                             {
                                 string id = link.Split('/')[4];
-                                
-                                    DownloadImageOfPost(folderBrowserDialog1.SelectedPath, id, cookie, id);
-                                
-                            }
-                            MessageBox.Show("Đã tải xong");
 
+                                DownloadImageOfPost(folderBrowserDialog1.SelectedPath, id, cookie, id);
+
+                            }
                         }).Start();
                 }
             }
@@ -299,7 +413,7 @@ namespace InsstagramTool
 
         private void pictureBox2_Click(object sender, EventArgs e)
         {
-            Application.Exit();
+            this.Visible = false;
         }
         public void DownloadImageOfPost(string path, string name, string cookie, string id)
         {
@@ -344,11 +458,46 @@ namespace InsstagramTool
                         src = item.display_resources[2].src;
                     http.Get(src).ToFile(path + "/" + name + DateTime.Now.Ticks + end);
                 }
+                MessageBox.Show("Đã tải xong");
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error: " + ex.Message);
             }
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            UnregisterHotKey(this.Handle, 1999);
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+            new Save().ShowDialog();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void MainForm_SizeChanged(object sender, EventArgs e)
+        {
+        }
+
+        private void notifyIcon1_DoubleClick(object sender, EventArgs e)
+        {
+            this.Visible = true;
+        }
+
+        private void mởPhầnMềmToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Visible = true;
+        }
+
+        private void đóngPhầnMềmToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
         }
     }
 }
@@ -1195,3 +1344,4 @@ class PostData
 
 
 }
+

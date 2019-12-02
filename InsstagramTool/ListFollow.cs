@@ -26,7 +26,7 @@ namespace InsstagramTool
         public int count = 0;
         public UserFollow userFind;
         public List<UserFollow> follow;
-        List<string> idList ;
+        List<string> idList;
         public ListFollow(string cookie, string IDUser, string query_hash)
         {
             this.cookie = cookie;
@@ -36,8 +36,8 @@ namespace InsstagramTool
             this.follow = new List<UserFollow>();
             this.idList = new List<string>();
             InitializeComponent();
-           
-            
+
+
         }
 
         private void ListFollow_Load(object sender, EventArgs e)
@@ -46,7 +46,7 @@ namespace InsstagramTool
             getUserFollow();
             if (follow.Count > 0)
             {
-                
+
                 foreach (UserFollow item in follow)
                 {
                     idList.Add(item.username);
@@ -60,7 +60,7 @@ namespace InsstagramTool
         {
             string selecString = listBox1.SelectedValue.ToString();
             flowLayoutPanel1.Controls.Clear();
-            userFind =  follow.Find(x => x.username.Equals(selecString));
+            userFind = follow.Find(x => x.username.Equals(selecString));
             this.IDFollow = userFind.ID;
             this.next = getList("", IDFollow);
         }
@@ -68,7 +68,7 @@ namespace InsstagramTool
         {
             if (after.Equals("-1"))
                 return "Error";
-            string data = "{\"id\":\""+id+"\",\"first\":24,\"after\":\""+after+"\"}";
+            string data = "{\"id\":\"" + id + "\",\"first\":24,\"after\":\"" + after + "\"}";
             string quety_hash = MainForm.query_hash["user_newfeed"].ToString();
             string link = MainForm.uri + "query_hash=" + quety_hash + "&variables=" + data;
             try
@@ -78,7 +78,7 @@ namespace InsstagramTool
                 MainForm.AddCookie(http, cookie);
                 string json = http.Get(link).ToString();
                 ImageOfUser.Rootobject root = JsonConvert.DeserializeObject<ImageOfUser.Rootobject>(json);
-                foreach(ImageOfUser.Edge item in root.data.user.edge_owner_to_timeline_media.edges)
+                foreach (ImageOfUser.Edge item in root.data.user.edge_owner_to_timeline_media.edges)
                 {
                     PictureBox pic = new PictureBox();
                     pic.Size = new Size(200, 200);
@@ -95,7 +95,8 @@ namespace InsstagramTool
                 else
                     return "-1";
 
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show("Error: " + ex.Message);
             }
@@ -103,7 +104,7 @@ namespace InsstagramTool
 
         }
 
-        
+
 
         public void getUserFollow()
         {
@@ -143,22 +144,22 @@ namespace InsstagramTool
 
         private void flowLayoutPanel1_Scroll(object sender, ScrollEventArgs e)
         {
-             
+
         }
 
         private void ListFollow_Enter(object sender, EventArgs e)
         {
-            
+
         }
 
         private void ListFollow_Activated(object sender, EventArgs e)
         {
-                    
+
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
-            
+
         }
 
         private void panel3_Click(object sender, EventArgs e)
@@ -169,12 +170,13 @@ namespace InsstagramTool
 
         private void button2_Click(object sender, EventArgs e)
         {
-            
-            if(folderBrowserDialog1.ShowDialog() == DialogResult.OK)
+
+            if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
             {
                 string path = folderBrowserDialog1.SelectedPath;
                 Thread t = new Thread(
-                    ()=> {
+                    () =>
+                    {
                         count = 0;
                         DownLoadImage(path, userFind.username + "_", cookie, "", IDFollow);
                     });
@@ -204,13 +206,14 @@ namespace InsstagramTool
                     {
                         src = item.node.video_url;
                         end = ".mp4";
-                    } 
+                    }
                     else
                         src = item.node.display_resources[2].src;
-                    http.Get(src).ToFile(path + "/" + name+DateTime.Now.Ticks+"_"+count+end);
+                    http.Get(src).ToFile(path + "/" + name + DateTime.Now.Ticks + "_" + count + end);
                     label5.Invoke(new MethodInvoker(
-                        ()=> {
-                            label5.Text = count+"";
+                        () =>
+                        {
+                            label5.Text = count + "";
                         }));
                     count++;
                 }
@@ -220,12 +223,13 @@ namespace InsstagramTool
                 else
                 {
                     label5.Invoke(new MethodInvoker(
-                        () => {
+                        () =>
+                        {
                             label5.Text = "Đã tải xong";
                         }));
                     return;
                 }
-                    
+
 
             }
             catch (Exception ex)
@@ -354,8 +358,9 @@ class ImageOfUser
         public string id { get; set; }
         public Dimensions dimensions { get; set; }
         public string display_url { get; set; }
-        public Display_Resources[] display_resources { get; set; }
+        public Display_Resources1[] display_resources { get; set; }
         public bool is_video { get; set; }
+        public string video_url { get; set; }
         public string tracking_token { get; set; }
         public Edge_Media_To_Tagged_User edge_media_to_tagged_user { get; set; }
         public object accessibility_caption { get; set; }
@@ -379,9 +384,7 @@ class ImageOfUser
         public bool viewer_can_reshare { get; set; }
         public string thumbnail_src { get; set; }
         public Thumbnail_Resources[] thumbnail_resources { get; set; }
-        public Dash_Info dash_info { get; set; }
-        public string video_url { get; set; }
-        public int video_view_count { get; set; }
+        public Edge_Sidecar_To_Children edge_sidecar_to_children { get; set; }
     }
 
     public class Dimensions
@@ -391,11 +394,6 @@ class ImageOfUser
     }
 
     public class Edge_Media_To_Tagged_User
-    {
-        public object[] edges { get; set; }
-    }
-
-    public class Edge_Media_To_Caption
     {
         public Edge1[] edges { get; set; }
     }
@@ -407,20 +405,23 @@ class ImageOfUser
 
     public class Node1
     {
-        public string text { get; set; }
+        public User1 user { get; set; }
+        public float x { get; set; }
+        public float y { get; set; }
     }
 
-    public class Edge_Media_To_Comment
+    public class User1
     {
-        public int count { get; set; }
-        public Page_Info1 page_info { get; set; }
+        public string full_name { get; set; }
+        public string id { get; set; }
+        public bool is_verified { get; set; }
+        public string profile_pic_url { get; set; }
+        public string username { get; set; }
+    }
+
+    public class Edge_Media_To_Caption
+    {
         public Edge2[] edges { get; set; }
-    }
-
-    public class Page_Info1
-    {
-        public bool has_next_page { get; set; }
-        public string end_cursor { get; set; }
     }
 
     public class Edge2
@@ -429,6 +430,29 @@ class ImageOfUser
     }
 
     public class Node2
+    {
+        public string text { get; set; }
+    }
+
+    public class Edge_Media_To_Comment
+    {
+        public int count { get; set; }
+        public Page_Info1 page_info { get; set; }
+        public Edge3[] edges { get; set; }
+    }
+
+    public class Page_Info1
+    {
+        public bool has_next_page { get; set; }
+        public string end_cursor { get; set; }
+    }
+
+    public class Edge3
+    {
+        public Node3 node { get; set; }
+    }
+
+    public class Node3
     {
         public string id { get; set; }
         public string text { get; set; }
@@ -454,7 +478,19 @@ class ImageOfUser
     public class Edge_Media_Preview_Like
     {
         public int count { get; set; }
-        public object[] edges { get; set; }
+        public Edge4[] edges { get; set; }
+    }
+
+    public class Edge4
+    {
+        public Node4 node { get; set; }
+    }
+
+    public class Node4
+    {
+        public string id { get; set; }
+        public string profile_pic_url { get; set; }
+        public string username { get; set; }
     }
 
     public class Owner1
@@ -463,14 +499,70 @@ class ImageOfUser
         public string username { get; set; }
     }
 
-    public class Dash_Info
+    public class Edge_Sidecar_To_Children
     {
-        public bool is_dash_eligible { get; set; }
-        public object video_dash_manifest { get; set; }
-        public int number_of_qualities { get; set; }
+        public Edge5[] edges { get; set; }
+    }
+
+    public class Edge5
+    {
+        public Node5 node { get; set; }
+    }
+
+    public class Node5
+    {
+        public string __typename { get; set; }
+        public string id { get; set; }
+        public Dimensions1 dimensions { get; set; }
+        public string display_url { get; set; }
+        public Display_Resources[] display_resources { get; set; }
+        public bool is_video { get; set; }
+        public string video_url { get; set; }
+        public string tracking_token { get; set; }
+        public Edge_Media_To_Tagged_User1 edge_media_to_tagged_user { get; set; }
+        public object accessibility_caption { get; set; }
+    }
+
+    public class Dimensions1
+    {
+        public int height { get; set; }
+        public int width { get; set; }
+    }
+
+    public class Edge_Media_To_Tagged_User1
+    {
+        public Edge6[] edges { get; set; }
+    }
+
+    public class Edge6
+    {
+        public Node6 node { get; set; }
+    }
+
+    public class Node6
+    {
+        public User2 user { get; set; }
+        public float x { get; set; }
+        public float y { get; set; }
+    }
+
+    public class User2
+    {
+        public string full_name { get; set; }
+        public string id { get; set; }
+        public bool is_verified { get; set; }
+        public string profile_pic_url { get; set; }
+        public string username { get; set; }
     }
 
     public class Display_Resources
+    {
+        public string src { get; set; }
+        public int config_width { get; set; }
+        public int config_height { get; set; }
+    }
+
+    public class Display_Resources1
     {
         public string src { get; set; }
         public int config_width { get; set; }
