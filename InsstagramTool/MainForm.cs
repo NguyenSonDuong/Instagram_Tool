@@ -31,7 +31,7 @@ namespace InsstagramTool
             Shift = 4,
             WinKey = 8
         }
-
+        bool isStop = false;
         protected override void WndProc(ref Message m)
         {
             base.WndProc(ref m);
@@ -51,16 +51,22 @@ namespace InsstagramTool
                     runDownloadUser();
                 }else if (id == 2012)
                 {
-
+                    
+                }
+                else if (id == 2019)
+                {
+                    this.Visible = true;
                 }
 
             }
         }
-
         public void runDownloadPost()
         {
             try
             {
+                DialogResult result = MessageBox.Show("Bạn có muốn tải toàn bộ ảnh\n của bài đăng về không", "Thông báo", MessageBoxButtons.YesNoCancel);
+                if (result != DialogResult.Yes)
+                    return;
                 string link = Clipboard.GetText();
                 if (link.StartsWith("https://www.instagram.com/") || link.StartsWith("https://instagram.com/") || link.StartsWith("instagram.com/"))
                 {
@@ -91,6 +97,9 @@ namespace InsstagramTool
         {
             try
             {
+                DialogResult result = MessageBox.Show("Bạn có muốn tải toàn bộ ảnh\n của người dùng này về không", "Thông báo", MessageBoxButtons.YesNoCancel);
+                if (result != DialogResult.Yes)
+                    return;
                 string link = Clipboard.GetText();
                 if (link.StartsWith("https://www.instagram.com/") || link.StartsWith("https://instagram.com/") || link.StartsWith("instagram.com/"))
                 {
@@ -107,9 +116,11 @@ namespace InsstagramTool
                     {
                         String name = "";
                         string idm = getIDOfUser(ref name, link, cookie);
+                        isSetMax = false;
                         if (!Directory.Exists(path + "\\" + name))
                             Directory.CreateDirectory(path + "\\" + name);
                         DownLoadImage(path + "\\" + name, idm, cookie, "", idm);
+                        
                     });
                     t.IsBackground = false;
                     t.Start();
@@ -120,8 +131,10 @@ namespace InsstagramTool
                 MessageBox.Show(ex.Message);
             }
         }
+        public bool isSetMax = false;
         public void DownLoadImage(string path, string name, string cookie, string after, string id)
         {
+            
             string data = "{\"id\":\"" + id + "\",\"first\":24,\"after\":\"" + after + "\"}";
             string quety_hash = MainForm.query_hash["user_newfeed"].ToString();
             string link = MainForm.uri + "query_hash=" + quety_hash + "&variables=" + data;
@@ -129,13 +142,28 @@ namespace InsstagramTool
             {
                 HttpRequest http = new HttpRequest();
                 http.Cookies = new CookieDictionary();
-                MainForm.AddCookie(http, cookie);
+                if(!string.IsNullOrEmpty(cookie))
+                    MainForm.AddCookie(http, cookie);
                 string json = http.Get(link).ToString();
                 ImageOfUser.Rootobject root = JsonConvert.DeserializeObject<ImageOfUser.Rootobject>(json);
+                if(!isSetMax)
+                    progressBar1.Invoke(new MethodInvoker(
+                           () => {
+                               progressBar1.Maximum = root.data.user.edge_owner_to_timeline_media.count;
+                               isSetMax = true;
+                           }));
                 foreach (ImageOfUser.Edge item in root.data.user.edge_owner_to_timeline_media.edges)
                 {
+                    if (isStop)
+                        break;
+                    progressBar1.Invoke(new MethodInvoker(
+                            () => {
+                                progressBar1.PerformStep();
+                            }));
                     if (item.node.__typename.Equals("GraphSidecar"))
                     {
+                        
+                        
                         foreach(ImageOfUser.Edge5 item2 in item.node.edge_sidecar_to_children.edges)
                         {
                             string src = "";
@@ -162,8 +190,9 @@ namespace InsstagramTool
                         else
                             src = item.node.display_resources[2].src;
                         http.Get(src).ToFile(path + "/" + name + DateTime.Now.Ticks + end);
+                        
                     }
-
+                    count++;
                     #region comment
                     //string src = "";
                     //string end = ".jpg";
@@ -177,14 +206,14 @@ namespace InsstagramTool
                     //http.Get(src).ToFile(path + "/" + name + DateTime.Now.Ticks + "_" + count + end);
                     //count++;
                     #endregion
-
+                    Thread.Sleep(new Random().Next(500, 2000));
                 }
-                Thread.Sleep(new Random().Next(500, 2000));
+                
                 if (root.data.user.edge_owner_to_timeline_media.page_info.has_next_page)
                     DownLoadImage(path, name, cookie, root.data.user.edge_owner_to_timeline_media.page_info.end_cursor, id);
                 else
                 {
-                    MessageBox.Show("Đãm tải xong: " + count);
+                    MessageBox.Show("Đã tải xong: " + count);
                 }
 
 
@@ -237,6 +266,45 @@ namespace InsstagramTool
             InitializeComponent();
 
         }
+        public void runDownloadUser(string link)
+        {
+            try
+            {
+                if (link.StartsWith("https://www.instagram.com/") || link.StartsWith("https://instagram.com/") || link.StartsWith("instagram.com/"))
+                {
+                    DialogResult result = MessageBox.Show("Bạn có muốn tải toàn bộ ảnh\n của người dùng này về không", "Thông báo", MessageBoxButtons.YesNoCancel);
+                    if (result != DialogResult.Yes)
+                        return;
+                    string path = "";
+                    if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
+                    {
+                        path = folderBrowserDialog1.SelectedPath;
+                    }
+                     
+
+                    if (string.IsNullOrEmpty(path))
+                        return;
+                    
+                    Thread t = new Thread(
+                    () =>
+                    {
+                        String name = "";
+                        string idm = getIDOfUser(ref name, link, cookie);
+                        isSetMax = false;
+                        if (!Directory.Exists(path + "\\" + name))
+                            Directory.CreateDirectory(path + "\\" + name);
+                        DownLoadImage(path + "\\" + name, idm, cookie, "", idm);
+
+                    });
+                    t.IsBackground = false;
+                    t.Start();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
         private void label2_Click(object sender, EventArgs e)
         {
 
@@ -249,9 +317,11 @@ namespace InsstagramTool
             int id = 1999;     // The id of the hotkey. 
             int id2 = 2000;
             int id3 = 2012;
+            int id4 = 2019;
             RegisterHotKey(this.Handle, id, (int)KeyModifier.Shift, Keys.F7.GetHashCode());
             RegisterHotKey(this.Handle, id2, (int)KeyModifier.Shift, Keys.F8.GetHashCode());
             RegisterHotKey(this.Handle, id3, (int)KeyModifier.Shift, Keys.F12.GetHashCode());
+            RegisterHotKey(this.Handle, id4, (int)KeyModifier.Shift, Keys.F1.GetHashCode());
             new DiChuyenForm(this, panel1);
         }
         public void loadUser()
@@ -478,7 +548,8 @@ namespace InsstagramTool
 
         private void button2_Click(object sender, EventArgs e)
         {
-
+            if(!string.IsNullOrEmpty(textBox4.Text))
+                runDownloadUser(textBox4.Text);
         }
 
         private void MainForm_SizeChanged(object sender, EventArgs e)

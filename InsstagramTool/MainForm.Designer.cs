@@ -64,6 +64,8 @@
             this.lấyFollowCủaBảnThânToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.thêmCookieToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.đóngPhầnMềmToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.label6 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -271,7 +273,7 @@
             this.button4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(44)))), ((int)(((byte)(44)))));
             this.button4.FlatAppearance.BorderSize = 0;
             this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button4.Location = new System.Drawing.Point(418, 251);
+            this.button4.Location = new System.Drawing.Point(172, 260);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(75, 36);
             this.button4.TabIndex = 12;
@@ -411,12 +413,31 @@
             this.đóngPhầnMềmToolStripMenuItem.Text = "Đóng phần mềm";
             this.đóngPhầnMềmToolStripMenuItem.Click += new System.EventHandler(this.đóngPhầnMềmToolStripMenuItem_Click);
             // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(172, 313);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(322, 28);
+            this.progressBar1.Step = 1;
+            this.progressBar1.TabIndex = 17;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(100, 318);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(66, 17);
+            this.label6.TabIndex = 18;
+            this.label6.Text = "Tiến trình tải:";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(873, 505);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.panel8);
             this.Controls.Add(this.button4);
@@ -494,6 +515,8 @@
         private System.Windows.Forms.ToolStripMenuItem lấyFollowCủaBảnThânToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem thêmCookieToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem đóngPhầnMềmToolStripMenuItem;
+        private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.Label label6;
     }
 }
 

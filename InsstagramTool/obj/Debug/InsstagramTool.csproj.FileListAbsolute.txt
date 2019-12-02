@@ -10,13 +10,6 @@ c:\users\nguyen son duong\documents\visual studio 2015\Projects\InsstagramTool\I
 c:\users\nguyen son duong\documents\visual studio 2015\Projects\InsstagramTool\InsstagramTool\obj\Debug\InsstagramTool.exe
 c:\users\nguyen son duong\documents\visual studio 2015\Projects\InsstagramTool\InsstagramTool\obj\Debug\InsstagramTool.pdb
 c:\users\nguyen son duong\documents\visual studio 2015\Projects\InsstagramTool\InsstagramTool\obj\Debug\InsstagramTool.MainForm.resources
-C:\Users\Nguyen Son Duong\documents\visual studio 2015\Projects\InsstagramTool\InsstagramTool\bin\Debug\DevExpress.Data.v19.1.dll
-C:\Users\Nguyen Son Duong\documents\visual studio 2015\Projects\InsstagramTool\InsstagramTool\bin\Debug\DevExpress.Images.v19.1.dll
-C:\Users\Nguyen Son Duong\documents\visual studio 2015\Projects\InsstagramTool\InsstagramTool\bin\Debug\DevExpress.Printing.v19.1.Core.dll
-C:\Users\Nguyen Son Duong\documents\visual studio 2015\Projects\InsstagramTool\InsstagramTool\bin\Debug\DevExpress.Utils.v19.1.dll
-C:\Users\Nguyen Son Duong\documents\visual studio 2015\Projects\InsstagramTool\InsstagramTool\bin\Debug\DevExpress.XtraBars.v19.1.dll
-C:\Users\Nguyen Son Duong\documents\visual studio 2015\Projects\InsstagramTool\InsstagramTool\bin\Debug\DevExpress.XtraEditors.v19.1.dll
-C:\Users\Nguyen Son Duong\documents\visual studio 2015\Projects\InsstagramTool\InsstagramTool\bin\Debug\DevExpress.XtraNavBar.v19.1.dll
 C:\Users\Nguyen Son Duong\documents\visual studio 2015\Projects\InsstagramTool\InsstagramTool\bin\Debug\DevExpress.Pdf.v19.1.Core.dll
 C:\Users\Nguyen Son Duong\documents\visual studio 2015\Projects\InsstagramTool\InsstagramTool\bin\Debug\DevExpress.Sparkline.v19.1.Core.dll
 C:\Users\Nguyen Son Duong\documents\visual studio 2015\Projects\InsstagramTool\InsstagramTool\bin\Debug\DevExpress.Data.v19.1.xml
