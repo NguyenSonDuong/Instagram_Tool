@@ -61,8 +61,6 @@
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.mởPhầnMềmToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.lấyFollowCủaBảnThânToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.thêmCookieToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.đóngPhầnMềmToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.label6 = new System.Windows.Forms.Label();
@@ -302,7 +300,7 @@
             this.lbFollower.Name = "lbFollower";
             this.lbFollower.Size = new System.Drawing.Size(195, 17);
             this.lbFollower.TabIndex = 10;
-            this.lbFollower.Text = "Tải ảnh của một user:";
+            this.lbFollower.Text = "null";
             this.lbFollower.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lbFollow
@@ -311,7 +309,7 @@
             this.lbFollow.Name = "lbFollow";
             this.lbFollow.Size = new System.Drawing.Size(195, 17);
             this.lbFollow.TabIndex = 9;
-            this.lbFollow.Text = "Tải ảnh của một user:";
+            this.lbFollow.Text = "null";
             this.lbFollow.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lbID
@@ -320,7 +318,7 @@
             this.lbID.Name = "lbID";
             this.lbID.Size = new System.Drawing.Size(195, 17);
             this.lbID.TabIndex = 8;
-            this.lbID.Text = "Tải ảnh của một user:";
+            this.lbID.Text = "null";
             this.lbID.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lbName
@@ -329,7 +327,7 @@
             this.lbName.Name = "lbName";
             this.lbName.Size = new System.Drawing.Size(195, 17);
             this.lbName.TabIndex = 7;
-            this.lbName.Text = "Tải ảnh của một user:";
+            this.lbName.Text = "null";
             this.lbName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // picAvatar
@@ -378,38 +376,24 @@
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mởPhầnMềmToolStripMenuItem,
-            this.lấyFollowCủaBảnThânToolStripMenuItem,
-            this.thêmCookieToolStripMenuItem,
             this.đóngPhầnMềmToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(203, 92);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(167, 48);
             // 
             // mởPhầnMềmToolStripMenuItem
             // 
             this.mởPhầnMềmToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.mởPhầnMềmToolStripMenuItem.Image = global::InsstagramTool.Properties.Resources._1491580635_yumminkysocialmedia26_83102;
             this.mởPhầnMềmToolStripMenuItem.Name = "mởPhầnMềmToolStripMenuItem";
-            this.mởPhầnMềmToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
+            this.mởPhầnMềmToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
             this.mởPhầnMềmToolStripMenuItem.Text = "Mở phần mềm";
             this.mởPhầnMềmToolStripMenuItem.Click += new System.EventHandler(this.mởPhầnMềmToolStripMenuItem_Click);
-            // 
-            // lấyFollowCủaBảnThânToolStripMenuItem
-            // 
-            this.lấyFollowCủaBảnThânToolStripMenuItem.Name = "lấyFollowCủaBảnThânToolStripMenuItem";
-            this.lấyFollowCủaBảnThânToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
-            this.lấyFollowCủaBảnThânToolStripMenuItem.Text = "Lấy Follow của bản thân";
-            // 
-            // thêmCookieToolStripMenuItem
-            // 
-            this.thêmCookieToolStripMenuItem.Name = "thêmCookieToolStripMenuItem";
-            this.thêmCookieToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
-            this.thêmCookieToolStripMenuItem.Text = "Thêm cookie";
             // 
             // đóngPhầnMềmToolStripMenuItem
             // 
             this.đóngPhầnMềmToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.đóngPhầnMềmToolStripMenuItem.Name = "đóngPhầnMềmToolStripMenuItem";
-            this.đóngPhầnMềmToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
+            this.đóngPhầnMềmToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
             this.đóngPhầnMềmToolStripMenuItem.Text = "Đóng phần mềm";
             this.đóngPhầnMềmToolStripMenuItem.Click += new System.EventHandler(this.đóngPhầnMềmToolStripMenuItem_Click);
             // 
@@ -512,8 +496,6 @@
         private System.Windows.Forms.NotifyIcon notifyIcon1;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem mởPhầnMềmToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem lấyFollowCủaBảnThânToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem thêmCookieToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem đóngPhầnMềmToolStripMenuItem;
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.Label label6;

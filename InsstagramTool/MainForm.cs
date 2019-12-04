@@ -51,11 +51,13 @@ namespace InsstagramTool
                     runDownloadUser();
                 }else if (id == 2012)
                 {
-                    
+                    DialogResult result = MessageBox.Show("Bạn có chắc chắn dừng tải không", "Thông báo", MessageBoxButtons.YesNo);
+                    if(result == DialogResult.Yes)
+                        isStop = true;
                 }
                 else if (id == 2019)
                 {
-                    this.Visible = true;
+                    this.Visible = !this.Visible;
                 }
 
             }
@@ -97,6 +99,7 @@ namespace InsstagramTool
         {
             try
             {
+                isStop = false;
                 DialogResult result = MessageBox.Show("Bạn có muốn tải toàn bộ ảnh\n của người dùng này về không", "Thông báo", MessageBoxButtons.YesNoCancel);
                 if (result != DialogResult.Yes)
                     return;
@@ -155,20 +158,22 @@ namespace InsstagramTool
                 foreach (ImageOfUser.Edge item in root.data.user.edge_owner_to_timeline_media.edges)
                 {
                     if (isStop)
-                        break;
+                    {
+                        MessageBox.Show("Đã dừng quá trình tải số ảnh tải được là: " + count);
+                        return;
+                    }
+                        
                     progressBar1.Invoke(new MethodInvoker(
                             () => {
                                 progressBar1.PerformStep();
                             }));
                     if (item.node.__typename.Equals("GraphSidecar"))
                     {
-                        
-                        
                         foreach(ImageOfUser.Edge5 item2 in item.node.edge_sidecar_to_children.edges)
                         {
                             string src = "";
                             string end = ".jpg";
-                            if (item.node.is_video)
+                            if (item2.node.is_video)
                             {
                                 src = item2.node.video_url;
                                 end = ".mp4";
@@ -176,6 +181,7 @@ namespace InsstagramTool
                             else
                                 src = item2.node.display_resources[2].src;
                             http.Get(src).ToFile(path + "/" + name + DateTime.Now.Ticks + end);
+                            count++;
                         }
                     }
                     else
@@ -190,22 +196,9 @@ namespace InsstagramTool
                         else
                             src = item.node.display_resources[2].src;
                         http.Get(src).ToFile(path + "/" + name + DateTime.Now.Ticks + end);
-                        
+                        count++;
                     }
-                    count++;
-                    #region comment
-                    //string src = "";
-                    //string end = ".jpg";
-                    //if (item.node.is_video)
-                    //{
-                    //    src = item.node.video_url;
-                    //    end = ".mp4";
-                    //}
-                    //else
-                    //    src = item.node.display_resources[2].src;
-                    //http.Get(src).ToFile(path + "/" + name + DateTime.Now.Ticks + "_" + count + end);
-                    //count++;
-                    #endregion
+                    
                     Thread.Sleep(new Random().Next(500, 2000));
                 }
                 
@@ -257,6 +250,7 @@ namespace InsstagramTool
         public string IDUser = "";
         public static string uri = "https://www.instagram.com/graphql/query/?";
         public string cookie = "";
+        ListFollow li;
         public MainForm()
         {
             query_hash.Add("userInfor", "c9100bf9110dd6361671f113dd02e7d6");
@@ -293,7 +287,7 @@ namespace InsstagramTool
                         isSetMax = false;
                         if (!Directory.Exists(path + "\\" + name))
                             Directory.CreateDirectory(path + "\\" + name);
-                        DownLoadImage(path + "\\" + name, idm, cookie, "", idm);
+                        DownLoadImage(path + "\\" + name, name, cookie, "", idm);
 
                     });
                     t.IsBackground = false;
@@ -320,8 +314,9 @@ namespace InsstagramTool
             int id4 = 2019;
             RegisterHotKey(this.Handle, id, (int)KeyModifier.Shift, Keys.F7.GetHashCode());
             RegisterHotKey(this.Handle, id2, (int)KeyModifier.Shift, Keys.F8.GetHashCode());
-            RegisterHotKey(this.Handle, id3, (int)KeyModifier.Shift, Keys.F12.GetHashCode());
+            RegisterHotKey(this.Handle, id3, (int)KeyModifier.Shift, Keys.F5.GetHashCode());
             RegisterHotKey(this.Handle, id4, (int)KeyModifier.Shift, Keys.F1.GetHashCode());
+            li = new ListFollow(cookie, IDUser, query_hash["follow"].ToString());
             new DiChuyenForm(this, panel1);
         }
         public void loadUser()
@@ -377,7 +372,7 @@ namespace InsstagramTool
                         }
                         catch (Exception ex)
                         {
-                            MessageBox.Show("Errorr: Error connect to instagram ( Load data user )" + ex.Message);
+                            MessageBox.Show("Errorr: Error connect to instagram ( Load data user ): Error cookie, error connet to server" );
                         }
                     }
                     else
@@ -452,9 +447,14 @@ namespace InsstagramTool
 
         private void button4_Click(object sender, EventArgs e)
         {
-            ListFollow li = new ListFollow(cookie, IDUser, query_hash["follow"].ToString());
+            Thread t = new Thread(
+                ()=> {
+                    ListFollow li = new ListFollow(cookie, IDUser, query_hash["follow"].ToString());
+                    li.ShowDialog();
+                });
+            t.IsBackground = false;
+            t.Start();
             label5.Text = "Đang cập nhật dữ liệu";
-            li.ShowDialog();
             label5.Text = "";
 
         }
@@ -493,11 +493,16 @@ namespace InsstagramTool
             {
                 HttpRequest http = new HttpRequest();
                 http.Cookies = new CookieDictionary();
-                AddCookie(http, cookie);
+                if(!string.IsNullOrEmpty(cookie))
+                    AddCookie(http, cookie);
                 string json = http.Get(link).ToString();
                 PostData.Rootobject root = JsonConvert.DeserializeObject<PostData.Rootobject>(json);
                 if (!root.status.Equals("ok"))
+                {
+                    MessageBox.Show("Lỗi cookie, hoặc người dùng không tồn tại\nvui lòng kiểm tra lại cookie,\n");
                     return;
+                }
+                    
                 if (root.data.shortcode_media.__typename.Equals("GraphSidecar"))
                 {
                     foreach (PostData.Edge6 item in root.data.shortcode_media.edge_sidecar_to_children.edges)
@@ -568,7 +573,19 @@ namespace InsstagramTool
 
         private void đóngPhầnMềmToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Application.Exit();
+            DialogResult re = MessageBox.Show("Bạn có chắc chắn thoát chương trình\nĐang có 1 tiến trình tải", "Thông báo", MessageBoxButtons.YesNo);
+            if(re == DialogResult.Yes)
+            {
+                Application.ExitThread();
+                Application.Exit();
+                this.Dispose();
+            }
+            
+        }
+        private void lấyFollowCủaBảnThânToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            
+           
         }
     }
 }
