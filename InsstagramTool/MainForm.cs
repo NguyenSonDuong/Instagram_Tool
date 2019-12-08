@@ -1,16 +1,10 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using xNet;
 
@@ -70,6 +64,12 @@ namespace InsstagramTool
                 if (result != DialogResult.Yes)
                     return;
                 string link = Clipboard.GetText();
+                if(string.IsNullOrEmpty(link))
+                {
+                    MessageBox.Show("Clipboard null");
+                    return;
+                }
+                progressBar1.Value = 0;
                 if (link.StartsWith("https://www.instagram.com/") || link.StartsWith("https://instagram.com/") || link.StartsWith("instagram.com/"))
                 {
                     if (!File.Exists("path.ini"))
@@ -99,11 +99,17 @@ namespace InsstagramTool
         {
             try
             {
+                progressBar1.Value = 0;
                 isStop = false;
                 DialogResult result = MessageBox.Show("Bạn có muốn tải toàn bộ ảnh\n của người dùng này về không", "Thông báo", MessageBoxButtons.YesNoCancel);
                 if (result != DialogResult.Yes)
                     return;
                 string link = Clipboard.GetText();
+                if (string.IsNullOrEmpty(link))
+                {
+                    MessageBox.Show("Clipboard null");
+                    return;
+                }
                 if (link.StartsWith("https://www.instagram.com/") || link.StartsWith("https://instagram.com/") || link.StartsWith("instagram.com/"))
                 {
                     if (!File.Exists("path.ini"))
@@ -159,7 +165,15 @@ namespace InsstagramTool
                 {
                     if (isStop)
                     {
-                        MessageBox.Show("Đã dừng quá trình tải số ảnh tải được là: " + count);
+                        try
+                        {
+                            MessageBox.Show("Đã dừng quá trình tải số ảnh tải được là: " + count);
+                            Process.Start(path);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Tải thất bại");
+                        }
                         return;
                     }
                         
@@ -206,7 +220,16 @@ namespace InsstagramTool
                     DownLoadImage(path, name, cookie, root.data.user.edge_owner_to_timeline_media.page_info.end_cursor, id);
                 else
                 {
-                    MessageBox.Show("Đã tải xong: " + count);
+                    try
+                    {
+                        Process.Start(path);
+                        MessageBox.Show("Đã tải xong: " + count);
+                    }
+                    catch(Exception ex)
+                    {
+                        MessageBox.Show("Tải thất bại");
+                    }
+                    
                 }
 
 
@@ -264,6 +287,7 @@ namespace InsstagramTool
         {
             try
             {
+                progressBar1.Value = 0;
                 if (link.StartsWith("https://www.instagram.com/") || link.StartsWith("https://instagram.com/") || link.StartsWith("instagram.com/"))
                 {
                     DialogResult result = MessageBox.Show("Bạn có muốn tải toàn bộ ảnh\n của người dùng này về không", "Thông báo", MessageBoxButtons.YesNoCancel);
@@ -316,7 +340,7 @@ namespace InsstagramTool
             RegisterHotKey(this.Handle, id2, (int)KeyModifier.Shift, Keys.F8.GetHashCode());
             RegisterHotKey(this.Handle, id3, (int)KeyModifier.Shift, Keys.F5.GetHashCode());
             RegisterHotKey(this.Handle, id4, (int)KeyModifier.Shift, Keys.F1.GetHashCode());
-            li = new ListFollow(cookie, IDUser, query_hash["follow"].ToString());
+            li = new ListFollow(cookie, IDUser, query_hash["follow"].ToString(),label5);
             new DiChuyenForm(this, panel1);
         }
         public void loadUser()
@@ -447,15 +471,16 @@ namespace InsstagramTool
 
         private void button4_Click(object sender, EventArgs e)
         {
+            label5.Text = "Đang cập nhật dữ liệu";
             Thread t = new Thread(
                 ()=> {
-                    ListFollow li = new ListFollow(cookie, IDUser, query_hash["follow"].ToString());
+                    ListFollow li = new ListFollow(cookie, IDUser, query_hash["follow"].ToString(),label5);
                     li.ShowDialog();
                 });
+            t.SetApartmentState(ApartmentState.STA);
             t.IsBackground = false;
             t.Start();
-            label5.Text = "Đang cập nhật dữ liệu";
-            label5.Text = "";
+            
 
         }
 
@@ -533,7 +558,15 @@ namespace InsstagramTool
                         src = item.display_resources[2].src;
                     http.Get(src).ToFile(path + "/" + name + DateTime.Now.Ticks + end);
                 }
-                MessageBox.Show("Đã tải xong");
+                try
+                {
+                    Process.Start(path);
+                    MessageBox.Show("Đã tải xong: " + count);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Tải thất bại");
+                }
             }
             catch (Exception ex)
             {
@@ -576,6 +609,7 @@ namespace InsstagramTool
             DialogResult re = MessageBox.Show("Bạn có chắc chắn thoát chương trình\nĐang có 1 tiến trình tải", "Thông báo", MessageBoxButtons.YesNo);
             if(re == DialogResult.Yes)
             {
+                isStop = true;
                 Application.ExitThread();
                 Application.Exit();
                 this.Dispose();
@@ -584,8 +618,25 @@ namespace InsstagramTool
         }
         private void lấyFollowCủaBảnThânToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            
-           
+
+
+        }
+
+        public static void CreateShortcut(string shortcutName, string shortcutPath, string targetFileLocation)
+        {
+            string shortcutLocation = System.IO.Path.Combine(shortcutPath, shortcutName + ".lnk");
+            IWshRuntimeLibrary.WshShell shell = new IWshRuntimeLibrary.WshShell();
+            IWshRuntimeLibrary.IWshShortcut shortcut = (IWshRuntimeLibrary.IWshShortcut)shell.CreateShortcut(shortcutLocation);
+
+            shortcut.Description = "Lối tắt đến InstagramTool";
+            shortcut.IconLocation = Environment.CurrentDirectory+@"\LogoIcon.ico";           
+            shortcut.TargetPath = targetFileLocation;                
+            shortcut.Save();                                   
+        }
+
+        private void backgroundWorker1_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
+
         }
     }
 }

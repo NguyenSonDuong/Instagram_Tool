@@ -1,19 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using xNet;
 using Newtonsoft.Json;
 using System.Threading;
 using System.IO;
+using System.Diagnostics;
 
 namespace InsstagramTool
 {
+
     public partial class ListFollow : Form
     {
         public int status = 0;
@@ -27,8 +24,10 @@ namespace InsstagramTool
         public UserFollow userFind;
         public List<UserFollow> follow;
         List<string> idList;
-        public ListFollow(string cookie, string IDUser, string query_hash)
+        Label label20;
+        public ListFollow(string cookie, string IDUser, string query_hash,Label label5)
         {
+            this.label20 = label5;
             this.cookie = cookie;
             this.IDUser = IDUser;
             this.query_hash = query_hash;
@@ -42,6 +41,10 @@ namespace InsstagramTool
 
         private void ListFollow_Load(object sender, EventArgs e)
         {
+            if (File.Exists("follow.ini"))
+            {
+
+            }
             new DiChuyenForm(this, panel1);
             getUserFollow();
             if (follow.Count > 0)
@@ -53,9 +56,48 @@ namespace InsstagramTool
                 }
                 listBox1.DataSource = idList;
             }
+            addFileFollow();
+            label20.Invoke(new MethodInvoker(
+                        () => {
+                            label20.ForeColor = Color.Green;
+                            label20.Text = "Đã cập nhật dữ liệu thành công";
+                        }));
             status = 10;
         }
+        public void addFileFollow()
+        {
+            try
+            {
+                FileStream file = new FileStream("follow.ini", FileMode.Append, FileAccess.Write);
+                StreamWriter stream = new StreamWriter(file);
+                foreach(UserFollow item in follow)
+                {
+                    stream.WriteLine(item.ID + "|" + item.username + "|" + item.full_name + "|" + item.profile_pic_url);
+                }
+                stream.Close();
+                file.Close();
+            }catch(Exception ex)
+            {
+                MessageBox.Show("Lỗi đọc file, có thể do xung đột dữ liệu vui lòng kiểm tra lại");
+            }
 
+        }
+        public void readFileFollow()
+        {
+            try
+            {
+                string[] data = File.ReadAllLines("follow.ini");
+                foreach (string item in data)
+                {
+                    string[] user = item.Split('|');
+                    follow.Add(new UserFollow(user[0], user[0], user[0], user[0]));
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (idList.Count <= 0)
@@ -177,7 +219,6 @@ namespace InsstagramTool
             listBox1.DataSource = idList.FindAll(x => x.Contains(textBox1.Text));
             flowLayoutPanel1.Controls.Clear();
         }
-
         private void button2_Click(object sender, EventArgs e)
         {
             if (idList.Count <= 0)
@@ -289,6 +330,8 @@ namespace InsstagramTool
                 () =>
                 {
                     unFollow(userFind.ID, cookie);
+                    follow.Remove(userFind);
+                    idList.Remove(userFind.username);
                 });
             t.IsBackground = false;
             t.Start();
@@ -325,6 +368,29 @@ namespace InsstagramTool
             {
                 MessageBox.Show("Lỗi không thể hủy theo dõi được:\nNguyên nhân có thể do Cookie hoặc đường truyền internet\nVui lòng kiểm tra lại");
             }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void button3_Click_1(object sender, EventArgs e)
+        {
+            try
+            {
+                foreach(string item in idList)
+                {
+                    File.AppendAllText("listID.data", "https://www.instagram.com/" + item+"\n");
+                }
+            }catch(Exception ex)
+            {
+                MessageBox.Show("Xung đột dữ liệu vui lòng thử lại sau");
+            }
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            Process.Start("https://www.instagram.com/" + userFind.username);
         }
     }
 }

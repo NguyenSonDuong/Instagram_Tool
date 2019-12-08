@@ -64,6 +64,7 @@
             this.đóngPhầnMềmToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.label6 = new System.Windows.Forms.Label();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -414,6 +415,10 @@
             this.label6.TabIndex = 18;
             this.label6.Text = "Tiến trình tải:";
             // 
+            // backgroundWorker1
+            // 
+            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 17F);
@@ -436,6 +441,7 @@
             this.Font = new System.Drawing.Font("SVN-Blue", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -499,6 +505,7 @@
         private System.Windows.Forms.ToolStripMenuItem đóngPhầnMềmToolStripMenuItem;
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.Label label6;
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
     }
 }
 

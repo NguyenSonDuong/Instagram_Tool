@@ -1,18 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
+﻿using Microsoft.Win32;
+using System;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reflection;
 using System.Windows.Forms;
 
 namespace InsstagramTool
 {
     public partial class Save : Form
     {
+        RegistryKey rkApp = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
         public Save()
         {
             InitializeComponent();
@@ -34,6 +30,28 @@ namespace InsstagramTool
         private void pictureBox2_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            MainForm.CreateShortcut("My InstagramTool", Environment.GetFolderPath(Environment.SpecialFolder.Desktop), Assembly.GetExecutingAssembly().Location);
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox1.Checked)
+            {
+                rkApp.SetValue("InstagramTool", Application.ExecutablePath);
+            }
+            else
+            {
+                rkApp.DeleteValue("InstagramTool", false);
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

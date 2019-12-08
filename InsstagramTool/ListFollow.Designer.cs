@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ListFollow));
             this.panel1 = new System.Windows.Forms.Panel();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -43,6 +44,8 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.flowLayoutPanel1.SuspendLayout();
@@ -178,7 +181,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.label3.Location = new System.Drawing.Point(623, 62);
+            this.label3.Location = new System.Drawing.Point(691, 62);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(71, 17);
             this.label3.TabIndex = 7;
@@ -187,18 +190,18 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(700, 62);
+            this.label5.Location = new System.Drawing.Point(768, 62);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(34, 17);
+            this.label5.Size = new System.Drawing.Size(14, 17);
             this.label5.TabIndex = 8;
-            this.label5.Text = "label5";
+            this.label5.Text = "0";
             // 
             // button1
             // 
             this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(44)))), ((int)(((byte)(44)))));
             this.button1.FlatAppearance.BorderSize = 0;
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Location = new System.Drawing.Point(276, 58);
+            this.button1.Location = new System.Drawing.Point(276, 56);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 29);
             this.button1.TabIndex = 9;
@@ -206,12 +209,40 @@
             this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // button3
+            // 
+            this.button3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(44)))), ((int)(((byte)(44)))));
+            this.button3.FlatAppearance.BorderSize = 0;
+            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button3.Location = new System.Drawing.Point(357, 56);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(75, 29);
+            this.button3.TabIndex = 10;
+            this.button3.Text = "Xuất link";
+            this.button3.UseVisualStyleBackColor = false;
+            this.button3.Click += new System.EventHandler(this.button3_Click_1);
+            // 
+            // button4
+            // 
+            this.button4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(44)))), ((int)(((byte)(44)))));
+            this.button4.FlatAppearance.BorderSize = 0;
+            this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button4.Location = new System.Drawing.Point(438, 56);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(118, 29);
+            this.button4.TabIndex = 11;
+            this.button4.Text = "Truy cập trang cá nhân";
+            this.button4.UseVisualStyleBackColor = false;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
             // ListFollow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.ClientSize = new System.Drawing.Size(922, 466);
+            this.Controls.Add(this.button4);
+            this.Controls.Add(this.button3);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label3);
@@ -224,6 +255,7 @@
             this.Font = new System.Drawing.Font("SVN-Blue", 9.75F);
             this.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "ListFollow";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -260,5 +292,7 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button button4;
     }
 }
