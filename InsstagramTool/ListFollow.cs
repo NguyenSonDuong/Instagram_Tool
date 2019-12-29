@@ -23,9 +23,9 @@ namespace InsstagramTool
         public int count = 0;
         public UserFollow userFind;
         public List<UserFollow> follow;
-        List<string> idList;
+        public List<string> idList;
         Label label20;
-        public ListFollow(string cookie, string IDUser, string query_hash,Label label5)
+        public ListFollow(string cookie, string IDUser, string query_hash, Label label5)
         {
             this.label20 = label5;
             this.cookie = cookie;
@@ -53,12 +53,14 @@ namespace InsstagramTool
                 foreach (UserFollow item in follow)
                 {
                     idList.Add(item.username);
+                    listBox1.Items.Add(item.username);
                 }
-                listBox1.DataSource = idList;
+
             }
             addFileFollow();
             label20.Invoke(new MethodInvoker(
-                        () => {
+                        () =>
+                        {
                             label20.ForeColor = Color.Green;
                             label20.Text = "Đã cập nhật dữ liệu thành công";
                         }));
@@ -70,13 +72,14 @@ namespace InsstagramTool
             {
                 FileStream file = new FileStream("follow.ini", FileMode.Append, FileAccess.Write);
                 StreamWriter stream = new StreamWriter(file);
-                foreach(UserFollow item in follow)
+                foreach (UserFollow item in follow)
                 {
                     stream.WriteLine(item.ID + "|" + item.username + "|" + item.full_name + "|" + item.profile_pic_url);
                 }
                 stream.Close();
                 file.Close();
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show("Lỗi đọc file, có thể do xung đột dữ liệu vui lòng kiểm tra lại");
             }
@@ -102,12 +105,14 @@ namespace InsstagramTool
         {
             if (idList.Count <= 0)
                 return;
-            string selecString = listBox1.SelectedValue.ToString();
+            string selecString = listBox1.SelectedItem.ToString();
             flowLayoutPanel1.Controls.Clear();
             userFind = follow.Find(x => x.username.Equals(selecString));
             this.IDFollow = userFind.ID;
             this.next = getList("", IDFollow);
         }
+
+
         public string getList(string after, string id)
         {
             if (after.Equals("-1"))
@@ -155,6 +160,7 @@ namespace InsstagramTool
         {
             try
             {
+                follow.Clear();
                 HttpRequest http = new HttpRequest();
                 http.Cookies = new CookieDictionary();
                 if (string.IsNullOrEmpty(cookie))
@@ -326,17 +332,21 @@ namespace InsstagramTool
         {
             if (idList.Count <= 0)
                 return;
+
             Thread t = new Thread(
                 () =>
                 {
-                    unFollow(userFind.ID, cookie);
+                    int status1 = 0;
+                    unFollow(userFind.ID, cookie, ref status1);
+                    if (status1 != -1)
+                        MessageBox.Show("Đã unfollow");
                     follow.Remove(userFind);
                     idList.Remove(userFind.username);
                 });
             t.IsBackground = false;
             t.Start();
         }
-        public void unFollow(string id, string cookie)
+        public void unFollow(string id, string cookie, ref int status)
         {
             try
             {
@@ -348,28 +358,42 @@ namespace InsstagramTool
                     return;
                 }
                 MainForm.AddCookie(http, this.cookie);
-                http.AddHeader("x-csrftoken", "015oKylXREy1u467izcCFm54fX5nWVeK");
-                http.AddHeader("x-ig-app-id", "936619743392459");
-                http.AddHeader("x-ig-www-claim", "hmac.AR0PAxlT3VfrAFo0aTRTtKPdRxG9WhhgU3dPgM2Q_BTJG4OG");
-                http.AddHeader("x-instagram-ajax", "da1b0f7a6e7c");
+                http.AddHeader("x-csrftoken", getCsrftokenFromCookie(cookie));
                 string link = "https://www.instagram.com/web/friendships/" + id + "/unfollow/";
                 string json = http.Post(link).ToString();
-                if(json.Contains("\"status\": \"ok\""))
+                if (json.Contains("\"status\": \"ok\""))
                 {
-                    MessageBox.Show("Đã hủy theo dõi thành công");
+                    status++;
                 }
                 else
                 {
                     MessageBox.Show("Lỗi không thể hủy theo dõi được:\nNguyên nhân có thể do Cookie\nVui lòng kiểm tra lại");
+                    status = -1;
                 }
-                
+
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Lỗi không thể hủy theo dõi được:\nNguyên nhân có thể do Cookie hoặc đường truyền internet\nVui lòng kiểm tra lại");
+                status = -1;
             }
         }
-
+        public static string getCsrftokenFromCookie(string cookie)
+        {
+            string[] temp = cookie.Split(';');
+            foreach (string item in temp)
+            {
+                string[] temp2 = item.Trim().Split('=');
+                if (temp2.Length > 1)
+                {
+                    if (temp2[0].Equals("csrftoken"))
+                    {
+                        return temp2[1];
+                    }
+                }
+            }
+            return "";
+        }
         private void button3_Click(object sender, EventArgs e)
         {
         }
@@ -378,11 +402,12 @@ namespace InsstagramTool
         {
             try
             {
-                foreach(string item in idList)
+                foreach (UserFollow item in follow)
                 {
-                    File.AppendAllText("listID.data", "https://www.instagram.com/" + item+"\n");
+                    File.AppendAllText("listID.data", item.ID + "|" + item.username + "|" + item.full_name + "|" + item.profile_pic_url + "\n");
                 }
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show("Xung đột dữ liệu vui lòng thử lại sau");
             }
@@ -391,6 +416,102 @@ namespace InsstagramTool
         private void button4_Click(object sender, EventArgs e)
         {
             Process.Start("https://www.instagram.com/" + userFind.username);
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            new FollowAllUser(cookie).ShowDialog();
+            getUserFollow();
+            updateUserFollow();
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            if (idList.Count <= 0)
+                return;
+            Thread t = new Thread(
+                () =>
+                {
+                    int status1 = 0;
+                    int couny = 0;
+                    foreach (UserFollow item in follow)
+                    {
+
+                        unFollow(item.ID, cookie, ref status1);
+                        if (status1 == -1)
+                            break;
+                        label5.Invoke(new MethodInvoker(
+                            () =>
+                            {
+                                label5.Text = status1 + "";
+                                couny++;
+                            }));
+                        Thread.Sleep(new Random().Next(1000, 3000));
+                    }
+                    follow.RemoveRange(0, couny);
+                    listBox1.Invoke(new MethodInvoker(
+                        () =>
+                        {
+                            updateUserFollow();
+                        }));
+
+                });
+            t.IsBackground = false;
+            t.Start();
+        }
+
+        private void updateUserFollow()
+        {
+            if (follow.Count >= 0)
+            {
+                idList.Clear();
+                follow.Clear();
+                this.data = "{\"id\":\"" + IDUser + "\",\"include_reel\":true,\"fetch_mutual\":false,\"first\":24,\"after\":\"\"}";
+                Thread t = new Thread(
+                    () =>
+                    {
+                        listBox1.Invoke(new MethodInvoker(
+                            () =>
+                            {
+                                listBox1.Items.Clear();
+                                getUserFollow();
+                                foreach (UserFollow item in follow)
+                                {
+                                    idList.Add(item.username);
+                                    listBox1.Items.Add(item.username);
+                                }
+                                listBox1.Update();
+                                listBox1.Refresh();
+                            }));
+                    });
+                t.IsBackground = true;
+                t.Start();
+
+
+
+            }
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            Thread t = new Thread(
+                () =>
+                {
+                    updateUserFollow();
+                });
+            t.IsBackground = false;
+            t.Start();
+
+        }
+
+        private void listBox1_DataSourceChanged(object sender, EventArgs e)
+        {
+            
+        }
+        
+        private void button8_Click(object sender, EventArgs e)
+        {
+            
         }
     }
 }
@@ -725,3 +846,4 @@ class ImageOfUser
     }
 
 }
+

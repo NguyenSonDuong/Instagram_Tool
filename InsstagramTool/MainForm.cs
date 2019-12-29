@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using InsstagramTool.ObjectData;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -12,7 +13,11 @@ namespace InsstagramTool
 {
     public partial class MainForm : Form
     {
-        #region
+        public static string PATH_USE_JSON = "user.json";
+        public static string PATH_COOKIE = "cookie.ini";
+        
+        #region xử lý phím tắt
+
         [System.Runtime.InteropServices.DllImport("user32.dll")]
         private static extern bool RegisterHotKey(IntPtr hWnd, int id, int fsModifiers, int vk);
         [System.Runtime.InteropServices.DllImport("user32.dll")]
@@ -69,7 +74,6 @@ namespace InsstagramTool
                     MessageBox.Show("Clipboard null");
                     return;
                 }
-                progressBar1.Value = 0;
                 if (link.StartsWith("https://www.instagram.com/") || link.StartsWith("https://instagram.com/") || link.StartsWith("instagram.com/"))
                 {
                     if (!File.Exists("path.ini"))
@@ -99,7 +103,6 @@ namespace InsstagramTool
         {
             try
             {
-                progressBar1.Value = 0;
                 isStop = false;
                 DialogResult result = MessageBox.Show("Bạn có muốn tải toàn bộ ảnh\n của người dùng này về không", "Thông báo", MessageBoxButtons.YesNoCancel);
                 if (result != DialogResult.Yes)
@@ -155,12 +158,7 @@ namespace InsstagramTool
                     MainForm.AddCookie(http, cookie);
                 string json = http.Get(link).ToString();
                 ImageOfUser.Rootobject root = JsonConvert.DeserializeObject<ImageOfUser.Rootobject>(json);
-                if(!isSetMax)
-                    progressBar1.Invoke(new MethodInvoker(
-                           () => {
-                               progressBar1.Maximum = root.data.user.edge_owner_to_timeline_media.count;
-                               isSetMax = true;
-                           }));
+                
                 foreach (ImageOfUser.Edge item in root.data.user.edge_owner_to_timeline_media.edges)
                 {
                     if (isStop)
@@ -176,11 +174,6 @@ namespace InsstagramTool
                         }
                         return;
                     }
-                        
-                    progressBar1.Invoke(new MethodInvoker(
-                            () => {
-                                progressBar1.PerformStep();
-                            }));
                     if (item.node.__typename.Equals("GraphSidecar"))
                     {
                         foreach(ImageOfUser.Edge5 item2 in item.node.edge_sidecar_to_children.edges)
@@ -266,9 +259,7 @@ namespace InsstagramTool
             }
             return "-1";
         }
-
         #endregion
-
         public static Dictionary<string, object> query_hash = new Dictionary<string, object>();
         public string IDUser = "";
         public static string uri = "https://www.instagram.com/graphql/query/?";
@@ -283,11 +274,11 @@ namespace InsstagramTool
             InitializeComponent();
 
         }
+
         public void runDownloadUser(string link)
         {
             try
             {
-                progressBar1.Value = 0;
                 if (link.StartsWith("https://www.instagram.com/") || link.StartsWith("https://instagram.com/") || link.StartsWith("instagram.com/"))
                 {
                     DialogResult result = MessageBox.Show("Bạn có muốn tải toàn bộ ảnh\n của người dùng này về không", "Thông báo", MessageBoxButtons.YesNoCancel);
@@ -298,8 +289,6 @@ namespace InsstagramTool
                     {
                         path = folderBrowserDialog1.SelectedPath;
                     }
-                     
-
                     if (string.IsNullOrEmpty(path))
                         return;
                     
@@ -332,6 +321,16 @@ namespace InsstagramTool
         {
 
             loadUser();
+            resignHotKey();
+            li = new ListFollow(cookie, IDUser, query_hash["follow"].ToString(),label5);
+            new DiChuyenForm(this, panel1);
+        }
+
+        /// <summary>
+        /// đăng ký phím tắt tổng cho app
+        /// </summary>
+        public void resignHotKey()
+        {
             int id = 1999;     // The id of the hotkey. 
             int id2 = 2000;
             int id3 = 2012;
@@ -340,12 +339,13 @@ namespace InsstagramTool
             RegisterHotKey(this.Handle, id2, (int)KeyModifier.Shift, Keys.F8.GetHashCode());
             RegisterHotKey(this.Handle, id3, (int)KeyModifier.Shift, Keys.F5.GetHashCode());
             RegisterHotKey(this.Handle, id4, (int)KeyModifier.Shift, Keys.F1.GetHashCode());
-            li = new ListFollow(cookie, IDUser, query_hash["follow"].ToString(),label5);
-            new DiChuyenForm(this, panel1);
         }
+        /// <summary>
+        /// lấy thông tin của người dùng cookie
+        /// </summary>
         public void loadUser()
         {
-            if (!File.Exists("cookie.ini"))
+            if (!File.Exists(PATH_COOKIE))
             {
                 lbID.Text = "";
                 lbFollower.Text = "";
@@ -370,14 +370,30 @@ namespace InsstagramTool
                             this.IDUser = myID;
                             if (!string.IsNullOrEmpty(myID))
                             {
+
                                 string dataPost = "{\"user_id\":\"" + myID + "\",\"include_chaining\":true,\"include_reel\":true,\"include_suggested_users\":true,\"include_logged_out_extras\":false,\"include_highlight_reels\":false,\"include_related_profiles\":false}";
                                 string getUserName = http.Get(uri + "query_hash=" + query_hash["userInfor"] + "&variables=" + dataPost).ToString();
                                 string userNameFormID = getUserNameFromID(getUserName).Trim();
                                 string linkGetInfor = "https://www.instagram.com/" + userNameFormID + "/?__a=1";
                                 InforUser.Rootobject root = null;
+
+                                string outJson = "";
+                                if (File.Exists(PATH_USE_JSON))
+                                {
+                                    outJson = File.ReadAllText(PATH_USE_JSON);
+                                    if (string.IsNullOrEmpty(outJson))
+                                    {
+                                        outJson = http.Get(linkGetInfor).ToString();
+                                    }
+                                }
+                                else
+                                {
+                                    outJson = http.Get(linkGetInfor).ToString();
+                                }
+                                
                                 try
                                 {
-                                    root = JsonConvert.DeserializeObject<InforUser.Rootobject>(http.Get(linkGetInfor).ToString());
+                                    root = JsonConvert.DeserializeObject<InforUser.Rootobject>(outJson);
                                 }
                                 catch (Exception ex)
                                 {
@@ -386,6 +402,18 @@ namespace InsstagramTool
 
                                 if (root != null)
                                 {
+                                    if (!File.Exists(PATH_USE_JSON))
+                                    {
+                                        try
+                                        {
+                                            File.WriteAllText(PATH_USE_JSON, outJson);
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            MessageBox.Show("Error: Không thể ghi file với thông tin người dùng");
+                                        }
+                                    }
+                                    
                                     picAvatar.ImageLocation = root.graphql.user.profile_pic_url_hd;
                                     lbFollow.Text = "Follow: " + root.graphql.user.edge_follow.count + "";
                                     lbFollower.Text = "Follower: " + root.graphql.user.edge_followed_by.count + "";
@@ -396,7 +424,7 @@ namespace InsstagramTool
                         }
                         catch (Exception ex)
                         {
-                            MessageBox.Show("Errorr: Error connect to instagram ( Load data user ): Error cookie, error connet to server" );
+                            MessageBox.Show("Error: Error connect to instagram ( Load data user ): Error cookie, error connet to server" );
                         }
                     }
                     else
@@ -441,6 +469,7 @@ namespace InsstagramTool
             }
             return "";
         }
+
         public static void AddCookie(HttpRequest http, string cookie)
         {
             var temp = cookie.Split(';');
@@ -461,6 +490,10 @@ namespace InsstagramTool
             try
             {
                 File.WriteAllText("cookie.ini", tbCookie.Text);
+                if (File.Exists(PATH_USE_JSON))
+                {
+                    File.Delete(PATH_USE_JSON);
+                }
                 loadUser();
             }
             catch (Exception ex)
@@ -471,6 +504,8 @@ namespace InsstagramTool
 
         private void button4_Click(object sender, EventArgs e)
         {
+            
+            label5.ForeColor = System.Drawing.Color.Red;
             label5.Text = "Đang cập nhật dữ liệu";
             Thread t = new Thread(
                 ()=> {
@@ -616,6 +651,7 @@ namespace InsstagramTool
             }
             
         }
+
         private void lấyFollowCủaBảnThânToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
@@ -638,8 +674,11 @@ namespace InsstagramTool
         {
 
         }
+
+       
     }
 }
+
 class DataGetInforUser
 {
 

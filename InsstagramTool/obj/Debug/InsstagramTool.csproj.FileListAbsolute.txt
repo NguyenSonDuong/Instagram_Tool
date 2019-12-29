@@ -15,3 +15,4 @@ C:\Users\Nguyen Son Duong\documents\visual studio 2015\Projects\InsstagramTool\I
 C:\Users\Nguyen Son Duong\documents\visual studio 2015\Projects\InsstagramTool\InsstagramTool\obj\Debug\InsstagramTool.exe
 C:\Users\Nguyen Son Duong\documents\visual studio 2015\Projects\InsstagramTool\InsstagramTool\obj\Debug\InsstagramTool.pdb
 C:\Users\Nguyen Son Duong\documents\visual studio 2015\Projects\InsstagramTool\InsstagramTool\obj\Debug\InsstagramTool.csprojResolveAssemblyReference.cache
+C:\Users\Nguyen Son Duong\documents\visual studio 2015\Projects\InsstagramTool\InsstagramTool\obj\Debug\InsstagramTool.FollowAllUser.resources
