@@ -1,0 +1,8 @@
+C:\Users\NguyenSonDuong\Documents\WinformProject\Instagram_Tool\ModelInstagram\bin\Debug\netstandard2.0\ModelInstagram.deps.json
+C:\Users\NguyenSonDuong\Documents\WinformProject\Instagram_Tool\ModelInstagram\bin\Debug\netstandard2.0\ModelInstagram.dll
+C:\Users\NguyenSonDuong\Documents\WinformProject\Instagram_Tool\ModelInstagram\bin\Debug\netstandard2.0\ModelInstagram.pdb
+C:\Users\NguyenSonDuong\Documents\WinformProject\Instagram_Tool\ModelInstagram\obj\Debug\netstandard2.0\ModelInstagram.AssemblyInfoInputs.cache
+C:\Users\NguyenSonDuong\Documents\WinformProject\Instagram_Tool\ModelInstagram\obj\Debug\netstandard2.0\ModelInstagram.AssemblyInfo.cs
+C:\Users\NguyenSonDuong\Documents\WinformProject\Instagram_Tool\ModelInstagram\obj\Debug\netstandard2.0\ModelInstagram.csproj.CoreCompileInputs.cache
+C:\Users\NguyenSonDuong\Documents\WinformProject\Instagram_Tool\ModelInstagram\obj\Debug\netstandard2.0\ModelInstagram.dll
+C:\Users\NguyenSonDuong\Documents\WinformProject\Instagram_Tool\ModelInstagram\obj\Debug\netstandard2.0\ModelInstagram.pdb

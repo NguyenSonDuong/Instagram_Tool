@@ -55,7 +55,9 @@
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System" />
+    <Reference Include="System">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.2\System.dll</HintPath>
+    </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -74,21 +76,15 @@
   <ItemGroup>
     <Compile Include="AllAction.cs" />
     <Compile Include="DiChuyenForm.cs" />
-    <Compile Include="FollowAllUser.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="FollowAllUser.cs" />
     <Compile Include="FollowAllUser.Designer.cs">
       <DependentUpon>FollowAllUser.cs</DependentUpon>
     </Compile>
-    <Compile Include="ListFollow.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="ListFollow.cs" />
     <Compile Include="ListFollow.Designer.cs">
       <DependentUpon>ListFollow.cs</DependentUpon>
     </Compile>
-    <Compile Include="MainForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="MainForm.cs" />
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
@@ -97,13 +93,17 @@
     <Compile Include="ObjectData\User.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Save.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="Save.cs" />
     <Compile Include="Save.Designer.cs">
       <DependentUpon>Save.cs</DependentUpon>
     </Compile>
     <Compile Include="UserFollow.cs" />
+    <Compile Include="view\MainView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="view\MainView.Designer.cs">
+      <DependentUpon>MainView.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="FollowAllUser.resx">
       <DependentUpon>FollowAllUser.cs</DependentUpon>
     </EmbeddedResource>
@@ -183,7 +183,12 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\ControllerInstagram\ControllerInstagram.csproj">
+      <Project>{e8d6dd8a-f889-4719-9d15-109c5217b3df}</Project>
+      <Name>ControllerInstagram</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

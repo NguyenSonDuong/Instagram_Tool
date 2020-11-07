@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "RNJGyLEV3nJ7MB+wwSNDvHzKtTnq/d2hvSzptUIPuZUYpFLKNEyedxuAlPVrmD2dWJEQlviM6W6HfIA4HdN3HA==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\NguyenSonDuong\\Documents\\WinformProject\\Instagram_Tool\\ModelInstagram\\ModelInstagram.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\NguyenSonDuong\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+    "C:\\Users\\NguyenSonDuong\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}
